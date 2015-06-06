@@ -9,7 +9,10 @@ function loadFriendsList(path) {
     if(fs.existsSync(path))
         return JSON.parse(fs.readFileSync(path));
 
-    return {};
+    return {
+        limit: 100,
+        welcomeMessage: ""
+    };
 }
 
 
