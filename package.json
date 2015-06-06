@@ -1,0 +1,14 @@
+{
+  "name": "vapor-friendslist",
+  "version": "1.0.0",
+  "description": "Vapor plugin to manage friends list automatically.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Michael Scholtz",
+    "email": "michael.scholtz@outlook.com"
+  },
+  "license": "MIT"
+}
