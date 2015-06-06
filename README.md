@@ -23,7 +23,7 @@ Welcome message text. This message is only sent if the message is a non-empty st
 ### Installation
 
 1. Go to plugins folder in Vapor.
-2. Run `https://github.com/scholtzm/vapor-friendslist.git`.
+2. Run `git clone https://github.com/scholtzm/vapor-friendslist.git`.
 3. Copy "sample.config.json" and rename it to "config.json".
 4. Edit "config.json" you just created.
 
