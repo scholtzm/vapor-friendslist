@@ -1,3 +1,3 @@
 # Vapor Friendslist
 
-Vapor plugin to manage your friends list.
+Vapor plugin to manage friends list automatically.
