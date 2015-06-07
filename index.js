@@ -11,7 +11,7 @@ module.exports = function(Vapor) {
     var config = Vapor.config.pluginOptions[appinfo.name];
 
     var friendsList = {};
-    var FRIENDSLIST_PATH = Vapor.extension.getPluginFolderPath(appinfo.name) + Vapor.config.username + '-friendslist.json';
+    var FRIENDSLIST_PATH = Vapor.extension.getPluginFolderPath(appinfo.name) + '/friendslist.json';
 
 
     if(config === undefined)
