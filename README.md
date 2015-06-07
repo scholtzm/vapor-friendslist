@@ -8,9 +8,22 @@
 - Removes the oldest active friend if the friends list becomes full.
 - Sends welcome message.
 
-### Settings
+### Installation
 
-See "sample.config.json" for these options.
+1. Go to your Vapor folder.
+2. Run `npm install git+https://github.com/scholtzm/vapor-friendslist.git`.
+3. Open your config file and update `pluginOptions` to include settings for this plugin. It should look something like this:
+
+```json
+"pluginOptions": {
+  "vapor-friendslist": {
+    "limit": 100,
+    "welcomeMessage": "Hello! Thanks for adding me."
+  }
+}
+```
+
+### Settings
 
 #### `limit`
 
@@ -19,13 +32,6 @@ Friends list limit. Default value 100.
 #### `welcomeMessage`
 
 Welcome message text. This message is only sent if the message is a non-empty string.
-
-### Installation
-
-1. Go to plugins folder in Vapor.
-2. Run `git clone https://github.com/scholtzm/vapor-friendslist.git`.
-3. Copy "sample.config.json" and rename it to "config.json".
-4. Edit "config.json" you just created.
 
 ### License
 

@@ -1,83 +1,5 @@
 var fs = require('fs');
-var config = require('./config.json');
 var appinfo = require('./package.json');
-
-var FRIENDSLIST_PATH = './plugins/' + appinfo.name + '/friendsList.json';
-
-
-function loadFriendsList(path) {
-    if(fs.existsSync(path))
-        return JSON.parse(fs.readFileSync(path));
-
-    return {
-        limit: 100,
-        welcomeMessage: ""
-    };
-}
-
-
-function saveFriendsList(path, friendsList) {
-    fs.writeFileSync(path, JSON.stringify(friendsList));
-}
-
-
-function getOldestActive(friendsList) {
-    var id;
-    var lowest = Number.MAX_VALUE;
-
-    for(var steamID in friendsList) {
-        if(friendsList[steamID] < lowest) {
-            lowest = friendsList[steamID];
-            id = steamID;
-        }
-    }
-
-    return steamID;
-}
-
-
-function addToFriendsList(friendsList, steamID) {
-    friendsList[steamID] = getTimeStamp();
-}
-
-
-function removeFromFriendsList(friendsList, steamID) {
-    delete friendsList[steamID];
-}
-
-
-function countFriendsList(friendsList) {
-    var result = 0;
-
-    for(var k in friendsList)
-        result++;
-
-    return result;
-}
-
-
-function addFriend(client, user, friendsList) {
-    if(countFriendsList(friendsList) === config.limit) {
-        var friend = getOldestActive(friendsList);
-        client.removeFriend(friend);
-        removeFromFriendsList(friendsList, friend);
-    }
-
-    client.addFriend(user);
-    addToFriendsList(friendsList, user);
-
-    if(config.welcomeMessage &&
-       typeof config.welcomeMessage == 'string' &&
-       config.welcomeMessage !== '') {
-        client.sendMessage(user, config.welcomeMessage);
-    }
-}
-
-
-function getTimeStamp() {
-    return Math.floor(new Date() / 1000);
-}
-
 
 /**
  * Exported function.
@@ -86,8 +8,90 @@ function getTimeStamp() {
 module.exports = function(Vapor) {
     var client = Vapor.client;
     var Steam = Vapor.Steam;
+    var config = Vapor.config.pluginOptions[appinfo.name];
 
-    var friendsList = loadFriendsList(FRIENDSLIST_PATH);
+    var friendsList = {};
+    var FRIENDSLIST_PATH = Vapor.extension.getPluginFolderPath(appinfo.name) + Vapor.config.username + '-friendslist.json';
+
+
+    if(config === undefined)
+        throw new Error('Missing config options for plugin ' + appinfo.name);
+
+
+    function loadFriendsList(path) {
+        if(fs.existsSync(path))
+            return JSON.parse(fs.readFileSync(path));
+
+        return {};
+    }
+
+
+    function saveFriendsList(path, friendsList) {
+        fs.writeFileSync(path, JSON.stringify(friendsList));
+    }
+
+
+    function getOldestActive(friendsList) {
+        var id;
+        var lowest = Number.MAX_VALUE;
+
+        for(var steamID in friendsList) {
+            if(friendsList[steamID] < lowest) {
+                lowest = friendsList[steamID];
+                id = steamID;
+            }
+        }
+
+        return steamID;
+    }
+
+
+    function addToFriendsList(friendsList, steamID) {
+        friendsList[steamID] = getTimeStamp();
+    }
+
+
+    function removeFromFriendsList(friendsList, steamID) {
+        delete friendsList[steamID];
+    }
+
+
+    function countFriendsList(friendsList) {
+        var result = 0;
+
+        for(var k in friendsList)
+            result++;
+
+        return result;
+    }
+
+
+    function addFriend(client, user, friendsList) {
+        if(countFriendsList(friendsList) === config.limit) {
+            var friend = getOldestActive(friendsList);
+            client.removeFriend(friend);
+            removeFromFriendsList(friendsList, friend);
+        }
+
+        client.addFriend(user);
+        addToFriendsList(friendsList, user);
+
+        if(config.welcomeMessage &&
+           typeof config.welcomeMessage == 'string' &&
+           config.welcomeMessage !== '') {
+            client.sendMessage(user, config.welcomeMessage);
+        }
+    }
+
+
+    function getTimeStamp() {
+        return Math.floor(new Date() / 1000);
+    }
+
+    /**
+     * Main entry point
+     */
+    friendsList = loadFriendsList(FRIENDSLIST_PATH);
 
     // Handle 'friend' event
     Vapor.extension.registerHandler('steam', 'friend', function(user, type) {
