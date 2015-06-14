@@ -3,15 +3,15 @@ var appinfo = require('./package.json');
 
 /**
  * Exported function.
- * @param  {object} Vapor Vapor instance.
+ * @param  {object} VaporAPI VaporAPI instance.
  */
-module.exports = function(Vapor) {
-    var client = Vapor.client;
-    var Steam = Vapor.Steam;
-    var config = Vapor.config.pluginOptions[appinfo.name];
+module.exports = function(VaporAPI) {
+    var client = VaporAPI.getClient();
+    var Steam = VaporAPI.getSteam();
+    var config = VaporAPI.getConfig(appinfo.name);
 
     var friendsList = {};
-    var FRIENDSLIST_PATH = Vapor.api.getPluginFolderPath(appinfo.name) + '/friendslist.json';
+    var FRIENDSLIST_PATH = VaporAPI.getPluginFolderPath(appinfo.name) + '/friendslist.json';
 
 
     if(config === undefined)
@@ -89,7 +89,7 @@ module.exports = function(Vapor) {
     friendsList = loadFriendsList(FRIENDSLIST_PATH);
 
     // Handle 'friend' event
-    Vapor.api.registerHandler('steam', 'friend', function(user, type) {
+    VaporAPI.registerHandler('steam', 'friend', function(user, type) {
         if(type === Steam.EFriendRelationship.RequestRecipient) {
             addFriend(client, user, friendsList);
         } else if(type === Steam.EFriendRelationship.None) {
@@ -100,7 +100,7 @@ module.exports = function(Vapor) {
     });
 
     // Handle 'relationships' event
-    Vapor.api.registerHandler('steam', 'relationships', function() {
+    VaporAPI.registerHandler('steam', 'relationships', function() {
         for(var user in client.friends) {
             if(client.friends[user] === Steam.EFriendRelationship.Friend) {
                 if(!friendsList.hasOwnProperty(user)) {
