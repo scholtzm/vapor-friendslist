@@ -57,12 +57,7 @@ module.exports = function(Vapor) {
 
 
     function countFriendsList(friendsList) {
-        var result = 0;
-
-        for(var k in friendsList)
-            result++;
-
-        return result;
+        return Object.keys(friendsList).length;
     }
 
 
