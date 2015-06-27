@@ -1,5 +1,4 @@
 var fs = require('fs');
-var appinfo = require('./package.json');
 
 /**
  * Exported function.
@@ -8,14 +7,14 @@ var appinfo = require('./package.json');
 module.exports = function(VaporAPI) {
     var client = VaporAPI.getClient();
     var Steam = VaporAPI.getSteam();
-    var config = VaporAPI.getConfig(appinfo.name);
+    var config = VaporAPI.getConfig();
 
     var friendsList = {};
-    var FRIENDSLIST_PATH = VaporAPI.getPluginFolderPath(appinfo.name) + '/friendslist.json';
+    var FRIENDSLIST_PATH = VaporAPI.getPluginFolderPath() + '/friendslist.json';
 
 
     if(config === undefined)
-        throw new Error('Missing config options for plugin ' + appinfo.name);
+        throw new Error('Missing config options.');
 
 
     function loadFriendsList(path) {
