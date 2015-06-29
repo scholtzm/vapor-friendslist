@@ -12,10 +12,17 @@
 
 1. Go to your Vapor folder.
 2. Run `npm install git+https://github.com/scholtzm/vapor-friendslist.git`.
-3. Open your config file and update `pluginOptions` to include settings for this plugin. It should look something like this:
+3. Open your config file and update `plugins` to include settings for this plugin. It should look something like this...
 
 ```json
-"pluginOptions": {
+"plugins": {
+  "vapor-friendslist": {}
+}
+```
+... or like this ...
+
+```json
+"plugins": {
   "vapor-friendslist": {
     "limit": 100,
     "welcomeMessage": "Hello! Thanks for adding me."
@@ -25,11 +32,11 @@
 
 ### Settings
 
-#### `limit`
+#### `limit` (optional)
 
-Friends list limit. Default value 100.
+Friends list limit. Default value is 100.
 
-#### `welcomeMessage`
+#### `welcomeMessage` (optional)
 
 Welcome message text. This message is only sent if the message is a non-empty string.
 
