@@ -88,28 +88,36 @@ module.exports = function(VaporAPI) {
     friendsList = loadFriendsList(FRIENDSLIST_PATH);
 
     // Handle 'friend' event
-    VaporAPI.registerHandler('steam', 'friend', function(user, type) {
-        if(type === Steam.EFriendRelationship.RequestRecipient) {
-            addFriend(client, user, friendsList);
-        } else if(type === Steam.EFriendRelationship.None) {
-            removeFromFriendsList(friendsList, user);
-        }
+    VaporAPI.registerHandler({
+        emitter: 'steam',
+        event: 'friend',
+        callback: function(user, type) {
+            if(type === Steam.EFriendRelationship.RequestRecipient) {
+                addFriend(client, user, friendsList);
+            } else if(type === Steam.EFriendRelationship.None) {
+                removeFromFriendsList(friendsList, user);
+            }
 
-        saveFriendsList(FRIENDSLIST_PATH, friendsList);
+            saveFriendsList(FRIENDSLIST_PATH, friendsList);
+        }
     });
 
     // Handle 'relationships' event
-    VaporAPI.registerHandler('steam', 'relationships', function() {
-        for(var user in client.friends) {
-            if(client.friends[user] === Steam.EFriendRelationship.Friend) {
-                if(!friendsList.hasOwnProperty(user)) {
-                    addToFriendsList(friendsList, user);
+    VaporAPI.registerHandler({
+        emitter: 'steam',
+        event: 'relationships',
+        callback: function() {
+            for(var user in client.friends) {
+                if(client.friends[user] === Steam.EFriendRelationship.Friend) {
+                    if(!friendsList.hasOwnProperty(user)) {
+                        addToFriendsList(friendsList, user);
+                    }
+                } else if(client.friends[user] === Steam.EFriendRelationship.RequestRecipient) {
+                    addFriend(client, user, friendsList);
                 }
-            } else if(client.friends[user] === Steam.EFriendRelationship.RequestRecipient) {
-                addFriend(client, user, friendsList);
             }
-        }
 
-        saveFriendsList(FRIENDSLIST_PATH, friendsList);
+            saveFriendsList(FRIENDSLIST_PATH, friendsList);
+        }
     });
 };
