@@ -10,7 +10,7 @@ module.exports = function(VaporAPI) {
     var config = VaporAPI.getConfig();
 
     var friendsList = {};
-    var FRIENDSLIST_PATH = VaporAPI.getPluginFolderPath() + '/friendslist.json';
+    var FRIENDSLIST_PATH = VaporAPI.getDataFolderPath() + '/friendslist.json';
 
 
     if(config === undefined)
@@ -89,9 +89,10 @@ module.exports = function(VaporAPI) {
 
     // Handle 'friend' event
     VaporAPI.registerHandler({
-        emitter: 'steam',
-        event: 'friend',
-        callback: function(user, type) {
+            emitter: 'steam',
+            event: 'friend'
+        },
+        function(user, type) {
             if(type === Steam.EFriendRelationship.RequestRecipient) {
                 addFriend(client, user, friendsList);
             } else if(type === Steam.EFriendRelationship.None) {
@@ -100,13 +101,14 @@ module.exports = function(VaporAPI) {
 
             saveFriendsList(FRIENDSLIST_PATH, friendsList);
         }
-    });
+    );
 
     // Handle 'relationships' event
     VaporAPI.registerHandler({
-        emitter: 'steam',
-        event: 'relationships',
-        callback: function() {
+            emitter: 'steam',
+            event: 'relationships'
+        },
+        function() {
             for(var user in client.friends) {
                 if(client.friends[user] === Steam.EFriendRelationship.Friend) {
                     if(!friendsList.hasOwnProperty(user)) {
@@ -119,5 +121,5 @@ module.exports = function(VaporAPI) {
 
             saveFriendsList(FRIENDSLIST_PATH, friendsList);
         }
-    });
+    );
 };
