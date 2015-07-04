@@ -5,7 +5,7 @@
 ### Features
 
 - Accepts friend requests.
-- Removes the oldest active friend if the friends list becomes full.
+- Removes the oldest friend if the friends list becomes full.
 - Sends welcome message.
 
 ### Installation
@@ -19,7 +19,9 @@
   "vapor-friendslist": {}
 }
 ```
+
 ... or like this ...
+
 
 ```json
 "plugins": {
@@ -34,11 +36,11 @@
 
 #### `limit` (optional)
 
-Friends list limit. Default value is 100.
+Friends list limit. Default value: `100`
 
 #### `welcomeMessage` (optional)
 
-Welcome message text. This message is only sent if the message is a non-empty string.
+Welcome message text. Default value: `undefined`
 
 ### License
 

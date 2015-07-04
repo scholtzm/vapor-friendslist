@@ -8,13 +8,13 @@ module.exports = function(VaporAPI) {
     var client = VaporAPI.getClient();
     var Steam = VaporAPI.getSteam();
     var config = VaporAPI.getConfig();
+    var log = VaporAPI.getLogger();
 
     var friendsList = {};
     var FRIENDSLIST_PATH = VaporAPI.getDataFolderPath() + '/friendslist.json';
 
-
-    if(config === undefined)
-        throw new Error('Missing config options.');
+    var limit = config.limit || 100;
+    var welcomeMessage = config.welcomeMessage || undefined;
 
 
     function loadFriendsList(path) {
@@ -41,7 +41,7 @@ module.exports = function(VaporAPI) {
             }
         }
 
-        return steamID;
+        return id;
     }
 
 
@@ -61,18 +61,20 @@ module.exports = function(VaporAPI) {
 
 
     function addFriend(client, user, friendsList) {
-        if(countFriendsList(friendsList) === config.limit) {
+        if(countFriendsList(friendsList) === limit) {
             var friend = getOldestActive(friendsList);
             client.removeFriend(friend);
             removeFromFriendsList(friendsList, friend);
+
+            log.info("My friends list was full. " + client.users[user].playerName + " (" + user + ") has been removed.");
         }
 
         client.addFriend(user);
         addToFriendsList(friendsList, user);
 
-        if(config.welcomeMessage &&
-           typeof config.welcomeMessage == 'string' &&
-           config.welcomeMessage !== '') {
+        log.info("User " + user + " has been added to my friends list.");
+
+        if(welcomeMessage && typeof welcomeMessage === 'string') {
             client.sendMessage(user, config.welcomeMessage);
         }
     }
@@ -119,7 +121,16 @@ module.exports = function(VaporAPI) {
                 }
             }
 
+            // 'friendsList' may still contain dead entries
+            for(var friend in friendsList) {
+                if(client.friends[friend] === undefined) {
+                    removeFromFriendsList(friendsList, friend);
+                }
+            }
+
             saveFriendsList(FRIENDSLIST_PATH, friendsList);
+
+            log.info("Friends list has been synchronized.");
         }
     );
 };
