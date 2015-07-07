@@ -1,5 +1,5 @@
 var fs = require('fs');
-var FriendsListManager = require('./friendslistmanager.js');
+var FriendsListManager = require('./friendslistmanager');
 
 /**
  * Exported function.
@@ -40,7 +40,7 @@ module.exports = function(VaporAPI) {
         log.info("User " + user + " has been added to my friends list.");
 
         if(welcomeMessage && typeof welcomeMessage === 'string') {
-            client.sendMessage(user, config.welcomeMessage);
+            client.sendMessage(user, welcomeMessage);
         }
     }
 

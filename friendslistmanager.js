@@ -81,6 +81,7 @@ FriendsListManager.prototype.count = function() {
 /**
  * Returns current timestamp.
  * @return {Number} Current timestamp.
+ * @private
  */
 FriendsListManager.prototype._getTimeStamp = function() {
     return Math.floor(new Date() / 1000);
