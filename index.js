@@ -1,5 +1,4 @@
-var fs = require('fs');
-var FriendsListManager = require('./friendslistmanager');
+var FriendsListManager = require('./friendslistmanager.js');
 
 /**
  * Exported function.
@@ -8,7 +7,7 @@ var FriendsListManager = require('./friendslistmanager');
 module.exports = function(VaporAPI) {
     var manager = new FriendsListManager();
 
-    var client = VaporAPI.getClient();
+    var steamFriends = VaporAPI.getHandler('steamFriends');
     var Steam = VaporAPI.getSteam();
     var config = VaporAPI.getConfig();
     var log = VaporAPI.getLogger();
@@ -22,25 +21,25 @@ module.exports = function(VaporAPI) {
      * Adds friend to friends list.
      *
      * Also removes friend if necessary.
-     * @param {object} client Active Steam client.
-     * @param {string} user   SteamID64.
+     * @param {object} steamFriends Active SteamFriends handler.
+     * @param {string} user         SteamID64.
      */
-    function addFriend(client, user) {
+    function addFriend(steamFriends, user) {
         if(manager.count() === limit) {
             var removedUser = manager.getOldestAdded();
-            client.removeFriend(removedUser);
+            steamFriends.removeFriend(removedUser);
             manager.remove(removedUser);
 
-            log.info("My friends list was full. " + client.users[removedUser].playerName + " (" + removedUser + ") has been removed.");
+            log.info("My friends list was full. " + steamFriends.personaStates[removedUser].player_name + " (" + removedUser + ") has been removed.");
         }
 
-        client.addFriend(user);
+        steamFriends.addFriend(user);
         manager.add(user);
 
         log.info("User " + user + " has been added to my friends list.");
 
         if(welcomeMessage && typeof welcomeMessage === 'string') {
-            client.sendMessage(user, welcomeMessage);
+            steamFriends.sendMessage(user, welcomeMessage);
         }
     }
 
@@ -52,12 +51,12 @@ module.exports = function(VaporAPI) {
 
     // Handle 'friend' event
     VaporAPI.registerHandler({
-            emitter: 'steam',
+            emitter: 'steamFriends',
             event: 'friend'
         },
         function(user, type) {
             if(type === Steam.EFriendRelationship.RequestRecipient) {
-                addFriend(client, user);
+                addFriend(steamFriends, user);
             } else if(type === Steam.EFriendRelationship.None) {
                 manager.remove(user);
             }
@@ -68,23 +67,23 @@ module.exports = function(VaporAPI) {
 
     // Handle 'relationships' event
     VaporAPI.registerHandler({
-            emitter: 'steam',
+            emitter: 'steamFriends',
             event: 'relationships'
         },
         function() {
-            for(var user in client.friends) {
-                if(client.friends[user] === Steam.EFriendRelationship.Friend) {
+            for(var user in steamFriends.friends) {
+                if(steamFriends.friends[user] === Steam.EFriendRelationship.Friend) {
                     if(!manager.friends.hasOwnProperty(user)) {
                         manager.add(user);
                     }
-                } else if(client.friends[user] === Steam.EFriendRelationship.RequestRecipient) {
-                    addFriend(client, user);
+                } else if(steamFriends.friends[user] === Steam.EFriendRelationship.RequestRecipient) {
+                    addFriend(steamFriends, user);
                 }
             }
 
             // 'friendsList' may still contain dead entries
             for(var friend in manager.friends) {
-                if(client.friends[friend] === undefined) {
+                if(steamFriends.friends[friend] === undefined) {
                     manager.remove(friend);
                 }
             }

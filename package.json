@@ -1,6 +1,6 @@
 {
   "name": "vapor-friendslist",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vapor plugin to manage friends list automatically.",
   "main": "index.js",
   "scripts": {
