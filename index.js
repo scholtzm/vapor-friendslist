@@ -39,7 +39,9 @@ module.exports = function(VaporAPI) {
         log.info("User " + user + " has been added to my friends list.");
 
         if(welcomeMessage && typeof welcomeMessage === 'string') {
-            steamFriends.sendMessage(user, welcomeMessage);
+            setTimeout(function() {
+                steamFriends.sendMessage(user, welcomeMessage);
+            }, 3000);
         }
     }
 
