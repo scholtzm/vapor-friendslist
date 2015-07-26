@@ -9,8 +9,9 @@ module.exports = function(VaporAPI) {
 
     var steamFriends = VaporAPI.getHandler('steamFriends');
     var Steam = VaporAPI.getSteam();
-    var config = VaporAPI.getConfig();
+    var config = VaporAPI.getConfig().plugins[VaporAPI.pluginName];
     var log = VaporAPI.getLogger();
+    var utils = VaporAPI.getUtils();
 
     var FRIENDSLIST_PATH = VaporAPI.getDataFolderPath() + '/friendslist.json';
 
@@ -30,7 +31,7 @@ module.exports = function(VaporAPI) {
             steamFriends.removeFriend(removedUser);
             manager.remove(removedUser);
 
-            log.info("My friends list was full. " + steamFriends.personaStates[removedUser].player_name + " (" + removedUser + ") has been removed.");
+            log.info("My friends list was full. " + utils.getUserDescription(removedUser) + " has been removed.");
         }
 
         steamFriends.addFriend(user);
