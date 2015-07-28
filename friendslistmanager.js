@@ -30,7 +30,7 @@ FriendsListManager.prototype.load = function(path) {
 FriendsListManager.prototype.save = function(path) {
     var friends = this.friends;
 
-    fs.writeFileSync(path, JSON.stringify(friends));
+    fs.writeFileSync(path, JSON.stringify(friends, null, 2));
 };
 
 /**
