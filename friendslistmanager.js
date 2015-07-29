@@ -19,8 +19,6 @@ FriendsListManager.prototype.load = function(path) {
 
     if(fs.existsSync(path))
         friendsListManager.friends = JSON.parse(fs.readFileSync(path));
-
-    friendsListManager.friends = {};
 };
 
 /**
