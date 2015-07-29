@@ -17,6 +17,7 @@ module.exports = function(VaporAPI) {
 
     var limit = config.limit || 100;
     var welcomeMessage = config.welcomeMessage || undefined;
+    var welcomeMessageDelay = config.welcomeMessageDelay || 3000;
 
     /**
      * Adds friend to friends list.
@@ -32,17 +33,19 @@ module.exports = function(VaporAPI) {
             manager.remove(removedUser);
 
             log.info("My friends list was full. " + utils.getUserDescription(removedUser) + " has been removed.");
+            VaporAPI.emitEvent('friendRemoved', removedUser);
         }
 
         steamFriends.addFriend(user);
         manager.add(user);
 
         log.info("User " + user + " has been added to my friends list.");
+        VaporAPI.emitEvent('friendAccepted', user);
 
         if(welcomeMessage && typeof welcomeMessage === 'string') {
             setTimeout(function() {
                 steamFriends.sendMessage(user, welcomeMessage);
-            }, 3000);
+            }, welcomeMessageDelay);
         }
     }
 

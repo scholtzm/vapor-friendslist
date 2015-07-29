@@ -27,7 +27,8 @@
 "plugins": {
   "vapor-friendslist": {
     "limit": 100,
-    "welcomeMessage": "Hello! Thanks for adding me."
+    "welcomeMessage": "Hello! Thanks for adding me.",
+    "welcomeMessageDelay": 3000
   }
 }
 ```
@@ -41,6 +42,24 @@ Friends list limit. Default value: `100`
 #### `welcomeMessage` (optional)
 
 Welcome message text. Default value: `undefined`
+
+#### `welcomeMessageDelay` (optional)
+
+Welcome message delay in milliseconds. Default value: `3000` (3 seconds).
+
+### Events
+
+#### `friendAccepted`
+
+* steamID - user's SteamID64 as string
+
+Friend request has been accepted.
+
+#### `friendRemoved`
+
+* steamID - user's SteamID64 as string
+
+Friend has been removed from friends list because the limit has been reached.
 
 ### License
 
