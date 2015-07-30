@@ -32,14 +32,14 @@ module.exports = function(VaporAPI) {
             steamFriends.removeFriend(removedUser);
             manager.remove(removedUser);
 
-            log.info('My friends list was full. ' + utils.getUserDescription(removedUser) + ' has been removed.');
+            log.info('My friends list was full. %s has been removed.', utils.getUserDescription(removedUser));
             VaporAPI.emitEvent('friendRemoved', removedUser);
         }
 
         steamFriends.addFriend(user);
         manager.add(user);
 
-        log.info('User ' + user + ' has been added to my friends list.');
+        log.info('User %s has been added to my friends list.', user);
         VaporAPI.emitEvent('friendAccepted', user);
 
         if(welcomeMessage && typeof welcomeMessage === 'string') {
