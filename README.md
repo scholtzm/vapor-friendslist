@@ -7,6 +7,7 @@
 - Accepts friend requests.
 - Removes the oldest friend if the friends list becomes full.
 - Sends welcome message.
+- Provides custom events for other plugins to listen to.
 
 ### Installation
 
