@@ -1,15 +1,13 @@
 var FriendsListManager = require('./friendslistmanager.js');
 
-/**
- * Exported function.
- * @param  {object} VaporAPI VaporAPI instance.
- */
-module.exports = function(VaporAPI) {
+exports.name = 'vapor-friendslist';
+
+exports.plugin = function(VaporAPI) {
     var manager = new FriendsListManager();
 
     var steamFriends = VaporAPI.getHandler('steamFriends');
     var Steam = VaporAPI.getSteam();
-    var config = VaporAPI.getConfig().plugins[VaporAPI.pluginName];
+    var config = (VaporAPI.data && VaporAPI.data.config) ? VaporAPI.data.config : {};
     var log = VaporAPI.getLogger();
     var utils = VaporAPI.getUtils();
 

@@ -1,3 +1,5 @@
+[![NPM version](http://img.shields.io/npm/v/vapor-friendslist.svg?style=flat)](https://www.npmjs.org/package/vapor-friendslist)
+
 # Vapor Friends List Plugin
 
 [Vapor](https://github.com/scholtzm/vapor) plugin to manage friends list automatically.
@@ -11,30 +13,27 @@
 
 ### Installation
 
-1. Go to your Vapor folder.
-2. Run `npm install git+https://github.com/scholtzm/vapor-friendslist.git`.
-3. Open your config file and update `plugins` to include settings for this plugin. It should look something like this...
-
-```json
-"plugins": {
-  "vapor-friendslist": {}
-}
+```sh
+npm install vapor-friendslist
 ```
 
-... or like this ...
+### Usage
 
+```js
+var friendslist = require('vapor-friendslist');
 
-```json
-"plugins": {
-  "vapor-friendslist": {
-    "limit": 100,
-    "welcomeMessage": "Hello! Thanks for adding me.",
-    "welcomeMessageDelay": 3000
-  }
-}
+// Instantiate Vapor etc.
+
+vapor.use(friendslist);
+// or
+vapor.use(friendslist, {config: {
+    limit: 100,
+    welcomeMessage: 'Hello! Thanks for adding me.',
+    welcomeMessageDelay: 3000
+}});
 ```
 
-### Settings
+### Configuration
 
 #### `limit` (optional)
 
