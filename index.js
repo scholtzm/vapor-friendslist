@@ -77,7 +77,7 @@ exports.plugin = function(VaporAPI) {
         function() {
             for(var user in steamFriends.friends) {
                 if(steamFriends.friends[user] === Steam.EFriendRelationship.Friend) {
-                    if(!manager.friends.hasOwnProperty(user)) {
+                    if(!(user in manager.friends)) {
                         manager.add(user);
                     }
                 } else if(steamFriends.friends[user] === Steam.EFriendRelationship.RequestRecipient) {
@@ -87,7 +87,7 @@ exports.plugin = function(VaporAPI) {
 
             // 'friendsList' may still contain dead entries
             for(var friend in manager.friends) {
-                if(steamFriends.friends[friend] === undefined) {
+                if(!(friend in steamFriends.friends[friend])) {
                     manager.remove(friend);
                 }
             }

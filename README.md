@@ -14,7 +14,7 @@
 ### Installation
 
 ```sh
-npm install vapor-friendslist
+npm install vapor-friendslist --save
 ```
 
 ### Usage
