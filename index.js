@@ -27,6 +27,12 @@ exports.plugin = function(VaporAPI) {
     function addFriend(steamFriends, user) {
         if(manager.count() === limit) {
             var removedUser = manager.getOldestAdded();
+
+            if(removedUser === null) {
+                log.warn('There\'s no one to be removed. Friend request from %s will be ignored.', user);
+                return;
+            }
+
             steamFriends.removeFriend(removedUser);
             manager.remove(removedUser);
 

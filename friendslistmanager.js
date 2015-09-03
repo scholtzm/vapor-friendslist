@@ -39,7 +39,7 @@ FriendsListManager.prototype.save = function(path) {
  * @return {string} SteamID64.
  */
 FriendsListManager.prototype.getOldestAdded = function() {
-    var id;
+    var id = null;
     var lowest = Number.MAX_VALUE;
     var friends = this.friends;
     var VaporAPI = this.VaporAPI;
@@ -67,6 +67,10 @@ FriendsListManager.prototype.add = function(steamID) {
  * @param  {string} steamID User's SteamID64.
  */
 FriendsListManager.prototype.remove = function(steamID) {
+    if(steamID === null) {
+        return;
+    }
+
     delete this.friends[steamID];
 };
 

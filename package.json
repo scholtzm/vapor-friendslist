@@ -4,7 +4,7 @@
   "description": "Vapor plugin to manage friends list automatically.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha spec"
   },
   "author": {
     "name": "Michael Scholtz",
@@ -14,5 +14,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/scholtzm/vapor-friendslist.git"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.3.0"
   }
 }
