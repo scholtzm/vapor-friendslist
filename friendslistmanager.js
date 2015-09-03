@@ -6,7 +6,8 @@ module.exports = FriendsListManager;
  * Friends list management class.
  * @module
  */
-function FriendsListManager() {
+function FriendsListManager(VaporAPI) {
+    this.VaporAPI = VaporAPI;
     this.friends = {};
 }
 
@@ -17,8 +18,9 @@ function FriendsListManager() {
 FriendsListManager.prototype.load = function(path) {
     var friendsListManager = this;
 
-    if(fs.existsSync(path))
+    if(fs.existsSync(path)) {
         friendsListManager.friends = JSON.parse(fs.readFileSync(path));
+    }
 };
 
 /**
@@ -33,15 +35,17 @@ FriendsListManager.prototype.save = function(path) {
 
 /**
  * Returns oldest friend.
+ * Admins are skipped.
  * @return {string} SteamID64.
  */
 FriendsListManager.prototype.getOldestAdded = function() {
     var id;
     var lowest = Number.MAX_VALUE;
     var friends = this.friends;
+    var VaporAPI = this.VaporAPI;
 
     for(var steamID in friends) {
-        if(friends[steamID] < lowest) {
+        if(friends[steamID] < lowest && !VaporAPI.getUtils().isAdmin(steamID)) {
             lowest = friends[steamID];
             id = steamID;
         }

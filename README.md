@@ -10,11 +10,12 @@
 - Removes the oldest friend if the friends list becomes full.
 - Sends welcome message.
 - Provides custom events for other plugins to listen to.
+- Admins are protected from being auto-removed
 
 ### Installation
 
 ```sh
-npm install vapor-friendslist --save
+npm install vapor-friendslist
 ```
 
 ### Usage
