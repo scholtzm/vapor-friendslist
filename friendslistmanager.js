@@ -1,5 +1,3 @@
-var fs = require('fs');
-
 module.exports = FriendsListManager;
 
 /**
@@ -7,31 +5,9 @@ module.exports = FriendsListManager;
  * @module
  */
 function FriendsListManager(VaporAPI) {
-    this.VaporAPI = VaporAPI;
+    this._VaporAPI = VaporAPI;
     this.friends = {};
 }
-
-/**
- * Loads friends list from the specified path.
- * @param  {string} path Path to friends list JSON file.
- */
-FriendsListManager.prototype.load = function(path) {
-    var friendsListManager = this;
-
-    if(fs.existsSync(path)) {
-        friendsListManager.friends = JSON.parse(fs.readFileSync(path));
-    }
-};
-
-/**
- * Saves friends list to output file.
- * @param  {string} path Path to output file.
- */
-FriendsListManager.prototype.save = function(path) {
-    var friends = this.friends;
-
-    fs.writeFileSync(path, JSON.stringify(friends, null, 2));
-};
 
 /**
  * Returns oldest friend.
@@ -42,7 +18,7 @@ FriendsListManager.prototype.getOldestAdded = function() {
     var id = null;
     var lowest = Number.MAX_VALUE;
     var friends = this.friends;
-    var VaporAPI = this.VaporAPI;
+    var VaporAPI = this._VaporAPI;
 
     for(var steamID in friends) {
         if(friends[steamID] < lowest && !VaporAPI.getUtils().isAdmin(steamID)) {

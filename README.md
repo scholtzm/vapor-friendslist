@@ -27,11 +27,11 @@ var friendslist = require('vapor-friendslist');
 
 vapor.use(friendslist);
 // or
-vapor.use(friendslist, {config: {
+vapor.use(friendslist, {
     limit: 100,
     welcomeMessage: 'Hello! Thanks for adding me.',
     welcomeMessageDelay: 3000
-}});
+});
 ```
 
 ### Configuration
@@ -49,6 +49,12 @@ Welcome message text. Default value: `undefined`
 Welcome message delay in milliseconds. Default value: `3000` (3 seconds).
 
 ### Events
+
+#### `message:*`
+
+* `message` - A message string.
+
+Standard [message events](https://github.com/scholtzm/vapor/blob/master/docs/EVENTS.md#message) to be used with logger.
 
 #### `friendAccepted`
 
