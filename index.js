@@ -7,6 +7,7 @@ exports.name = PLUGIN_NAME;
 exports.plugin = function(VaporAPI) {
     var manager = new FriendsListManager(VaporAPI);
 
+    var log = VaporAPI.getLogger();
     var steamFriends = VaporAPI.getHandler('steamFriends');
     var Steam = VaporAPI.getSteam();
     var config = VaporAPI.data || {};
@@ -60,7 +61,7 @@ exports.plugin = function(VaporAPI) {
 
                 saveFriendsList();
 
-                VaporAPI.emitEvent('message:info', 'Friends list has been synchronized.');
+                log.info('Friends list has been synchronized.');
             }
         );
     }
@@ -77,21 +78,21 @@ exports.plugin = function(VaporAPI) {
             var removedUser = manager.getOldestAdded();
 
             if(removedUser === null) {
-                VaporAPI.emitEvent('message:warn', 'There\'s no one to be removed. Friend request from ' + user + ' will be ignored.');
+                log.warn('There\'s no one to be removed. Friend request from %s will be ignored.', user);
                 return;
             }
 
             steamFriends.removeFriend(removedUser);
             manager.remove(removedUser);
 
-            VaporAPI.emitEvent('message:info', 'My friends list was full. ' + utils.getUserDescription(removedUser) + ' has been removed.');
+            log.info('My friends list was full. %s has been removed.', utils.getUserDescription(removedUser));
             VaporAPI.emitEvent('friendRemoved', removedUser);
         }
 
         steamFriends.addFriend(user);
         manager.add(user);
 
-        VaporAPI.emitEvent('message:info', 'User ' + user + ' has been added to my friends list.');
+        log.info('User %s has been added to my friends list.', user);
         VaporAPI.emitEvent('friendAccepted', user);
 
         if(welcomeMessage && typeof welcomeMessage === 'string') {
@@ -104,7 +105,7 @@ exports.plugin = function(VaporAPI) {
     function saveFriendsList() {
         VaporAPI.emitEvent('writeFile', FRIENDSLIST_FILENAME, JSON.stringify(manager.friends, null, 2), function(error) {
             if(error) {
-                VaporAPI.emitEvent('message:warn', '`writeFile` event handler returned error.');
+                log.warn('`writeFile` event handler returned error.');
                 VaporAPI.emitEvent('debug', error);
             }
         });
@@ -130,7 +131,7 @@ exports.plugin = function(VaporAPI) {
                  try {
                      manager.friends = JSON.parse(data);
                  } catch(e) {
-                     VaporAPI.emitEvent('message:warn', 'Failed to load friends list from cache.');
+                     log.warn('Failed to load friends list from cache.');
                      VaporAPI.emitEvent('debug', error);
                  }
                  init();
