@@ -5,8 +5,8 @@ module.exports = FriendsListManager;
  * @module
  */
 function FriendsListManager(VaporAPI) {
-    this._VaporAPI = VaporAPI;
-    this.friends = {};
+  this._VaporAPI = VaporAPI;
+  this.friends = {};
 }
 
 /**
@@ -15,19 +15,19 @@ function FriendsListManager(VaporAPI) {
  * @return {string} SteamID64.
  */
 FriendsListManager.prototype.getOldestAdded = function() {
-    var id = null;
-    var lowest = Number.MAX_VALUE;
-    var friends = this.friends;
-    var VaporAPI = this._VaporAPI;
+  var id = null;
+  var lowest = Number.MAX_VALUE;
+  var friends = this.friends;
+  var VaporAPI = this._VaporAPI;
 
-    for(var steamID in friends) {
-        if(friends[steamID] < lowest && !VaporAPI.getUtils().isAdmin(steamID)) {
-            lowest = friends[steamID];
-            id = steamID;
-        }
+  for(var steamID in friends) {
+    if(friends[steamID] < lowest && !VaporAPI.getUtils().isAdmin(steamID)) {
+      lowest = friends[steamID];
+      id = steamID;
     }
+  }
 
-    return id;
+  return id;
 };
 
 /**
@@ -35,7 +35,7 @@ FriendsListManager.prototype.getOldestAdded = function() {
  * @param  {string} steamID User's SteamID64.
  */
 FriendsListManager.prototype.add = function(steamID) {
-    this.friends[steamID] = this._getTimeStamp();
+  this.friends[steamID] = this._getTimeStamp();
 };
 
 /**
@@ -43,11 +43,11 @@ FriendsListManager.prototype.add = function(steamID) {
  * @param  {string} steamID User's SteamID64.
  */
 FriendsListManager.prototype.remove = function(steamID) {
-    if(steamID === null) {
-        return;
-    }
+  if(steamID === null) {
+    return;
+  }
 
-    delete this.friends[steamID];
+  delete this.friends[steamID];
 };
 
 /**
@@ -55,9 +55,9 @@ FriendsListManager.prototype.remove = function(steamID) {
  * @return {Number} Number of friends.
  */
 FriendsListManager.prototype.count = function() {
-    var friends = this.friends;
+  var friends = this.friends;
 
-    return Object.keys(friends).length;
+  return Object.keys(friends).length;
 };
 
 /**
@@ -66,5 +66,5 @@ FriendsListManager.prototype.count = function() {
  * @private
  */
 FriendsListManager.prototype._getTimeStamp = function() {
-    return Math.floor(new Date() / 1000);
+  return Math.floor(new Date() / 1000);
 };

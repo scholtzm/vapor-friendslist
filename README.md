@@ -28,9 +28,9 @@ var friendslist = require('vapor-friendslist');
 vapor.use(friendslist);
 // or
 vapor.use(friendslist, {
-    limit: 100,
-    welcomeMessage: 'Hello! Thanks for adding me.',
-    welcomeMessageDelay: 3000
+  limit: 100,
+  welcomeMessage: 'Hello! Thanks for adding me.',
+  welcomeMessageDelay: 3000
 });
 ```
 
