@@ -54,7 +54,11 @@ Welcome message delay in milliseconds. Default value: `3000` (3 seconds).
 
 * `message` - A message string.
 
-Standard [message events](https://github.com/scholtzm/vapor/blob/master/docs/EVENTS.md#message) to be used with logger.
+Standard [Vapor message events](https://github.com/scholtzm/vapor/blob/master/docs/EVENTS.md#message) to be used with logger.
+
+#### `readFile` / `writeFile`
+
+Standard Vapor file events - [`readFile`](https://github.com/scholtzm/vapor/blob/master/docs/EVENTS.md#readfile) / [`writeFile`](https://github.com/scholtzm/vapor/blob/master/docs/EVENTS.md#writefile).
 
 #### `friendAccepted`
 

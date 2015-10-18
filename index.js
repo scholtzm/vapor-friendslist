@@ -114,13 +114,7 @@ exports.plugin = function(VaporAPI) {
     /**
      * Main entry point
      */
-    var hasFileHandler =
-        // concrete
-        VaporAPI.hasHandler({emitter: 'plugin', plugin: PLUGIN_NAME, event: 'readFile'}) ||
-        // any plugin
-        VaporAPI.hasHandler({emitter: 'plugin', plugin: '*', event: 'readFile'}) ||
-        // any emitter
-        VaporAPI.hasHandler({emitter: '*', event: 'readFile'});
+    var hasFileHandler = VaporAPI.hasHandler('readFile');
 
     if(hasFileHandler) {
         VaporAPI.emitEvent('readFile', FRIENDSLIST_FILENAME, function(error, data) {
