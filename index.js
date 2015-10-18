@@ -1,8 +1,6 @@
 var FriendsListManager = require('./friendslistmanager.js');
 
-var PLUGIN_NAME = 'vapor-friendslist';
-
-exports.name = PLUGIN_NAME;
+exports.name = 'vapor-friendslist';
 
 exports.plugin = function(VaporAPI) {
   var manager = new FriendsListManager(VaporAPI);
